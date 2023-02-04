@@ -37,11 +37,15 @@ stack_top:
 section .text
 global _start:function (_start.end - _start)
 _start:
+	extern kernel_main
 	mov esp, stack_top
 
-	extern kernel_main
+  push eax
+  push ebx
 	call kernel_main
 
+  pop ebx
+  pop eax
 	cli
 .hang:	hlt
 	jmp .hang
