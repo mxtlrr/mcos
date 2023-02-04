@@ -1,6 +1,8 @@
 #include "arch/isr.h"
 
 void exception_handler() {
-  printf("Something bad happened\n");
+  set_color(RED);
+  printf("\nSomething bad happened\n");
+  printf("Exception handler called!\n");
   __asm__ volatile ("cli; hlt"); // Completely hangs the computer
 }

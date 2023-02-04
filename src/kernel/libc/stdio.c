@@ -261,6 +261,8 @@ uint64_t FONT[256] = {
 }; 
 
 uint32_t color = 0xffffff; // white
+
+void set_color(uint32_t col){ color = col; }
 uint32_t* buffer = 0x0;
 
 void set_fb(uint32_t* addr){
