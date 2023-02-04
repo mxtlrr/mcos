@@ -260,11 +260,16 @@ uint64_t FONT[256] = {
 }; 
 
 uint32_t color = 0xffffff; // white
+uint32_t* buffer = 0x0;
+
+void set_fb(uint32_t* addr){
+	buffer = addr;
+}
 
 int x = 0;
 int y = 0;
 
-void putc(uint32_t* buffer, char c, int x, int y){
+void putc(char c){
 	uint32_t px = 0;
 	uint64_t bCh = FONT[c];
 
@@ -279,39 +284,55 @@ void putc(uint32_t* buffer, char c, int x, int y){
 	// y axis
 	if((y+8 < 0) || (y > HEIGHT)){
 		// do something
+		return;
 	}
-		
-	// test if the charactor will be clipped (will it be fully in the screen or partially)
-	if (x >= 0 && x+8 < WIDTH && y >= 0 && y+8 < HEIGHT) {
-		// fully in the screen - pre calculate some of the values
-		// so there is less going on in the loop
-		int i = WIDTH * (y - 1) + x + 8;
-		int incAmount = WIDTH - 8;
-		for (int yy = 7; yy >= 0; yy-- ) {
-			i += incAmount;
-			for (int xx = 7; xx >= 0; xx-- ) {
-				// test if a pixel is drawn here
-				if ((bCh >> px++) & 1)
-					buffer[i] = color;
-				i++;
-			}
-		}
-	} else {
-		// partially in the screen
-		int xpos = 0;
-		int i = WIDTH* (y - 1);
-		for (int yy = 0; yy < 8; yy++ ) {
-			i += WIDTH;
-			xpos = x;
-			for (int xx = 7; xx >= 0; xx-- ) {
+
+	// i dont know what to put here
+	if(c == '\n'){
+		x=0;
+		y+=8;
+	} else {			
+		// test if the charactor will be clipped (will it be fully in the screen or partially)
+		if (x >= 0 && x+8 < WIDTH && y >= 0 && y+8 < HEIGHT) {
+			// fully in the screen - pre calculate some of the values
+			// so there is less going on in the loop
+			int i = WIDTH * (y - 1) + x + 8;
+			int incAmount = WIDTH - 8;
+			for (int yy = 7; yy >= 0; yy-- ) {
+				i += incAmount;
+				for (int xx = 7; xx >= 0; xx--) {
 					// test if a pixel is drawn here
-					if ((bCh >> px++) & 1) {
-						// test if the pixel will be off screen
-						if (xpos > 0 && xpos < WIDTH && yy+y > 0 && yy+y < HEIGHT)
-							buffer[i + xpos] = color;
-					}
-					xpos++;
+					if ((bCh >> px++) & 1)
+						buffer[i] = color;
+					i++;
+				}
 			}
-		} 
+		} else {
+			// partially in the screen
+			int xpos = 0;
+			int i = WIDTH* (y - 1);
+			for (int yy = 0; yy < 8; yy++ ) {
+				i += WIDTH;
+				xpos = x;
+				for (int xx = 7; xx >= 0; xx-- ) {
+						// test if a pixel is drawn here
+						if ((bCh >> px++) & 1) {
+							// test if the pixel will be off screen
+							if (xpos > 0 && xpos < WIDTH && yy+y > 0 && yy+y < HEIGHT)
+								buffer[i + xpos] = color;
+						}
+						xpos++;
+				}
+			} 
+		}
+
+		// increment
+		x+=8;
 	}
+}
+
+
+void puts(char* fmt){
+	for(size_t i = 0; fmt[i]; i++)
+		putc(buffer, fmt[i]);
 }
