@@ -7,6 +7,8 @@
 #define GREEN 0x00ff00
 #define BLUE  0x0000ff
 
+#define WIDTH  1024
+#define HEIGHT  768
 
 #define PITCH 4096
 
