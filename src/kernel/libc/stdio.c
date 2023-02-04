@@ -1,4 +1,5 @@
 #include "libc/stdio.h"
+
 // temple OS font..
 uint64_t FONT[256] = {
 	0x0000000000000000,
@@ -334,5 +335,35 @@ void putc(char c){
 
 void puts(char* fmt){
 	for(size_t i = 0; fmt[i]; i++)
-		putc(buffer, fmt[i]);
+		putc(fmt[i]);
+}
+
+void printf(char* fmt, ...){
+	va_list ap;
+	va_start(ap, fmt);
+
+	char* ptr;
+
+	for (ptr = fmt; *ptr != '\0'; ++ptr) {
+		if (*ptr == '%') {
+			++ptr;
+			switch (*ptr) {
+				case 's':	// string
+					puts(va_arg(ap, char*));
+					break;
+				case 'd': // integer
+					puts((char*)atoi(va_arg(ap, int), 10));
+					break;
+				case 'x': // hexadecimal
+					puts((char*)atoi(va_arg(ap, uint32_t), 16));
+					break;
+				case 'c': // char
+					putc(va_arg(ap, int));
+          break;
+			}
+		} else {
+			char t[2] = { *ptr, 0 };
+			puts(t);
+		}
+	}
 }

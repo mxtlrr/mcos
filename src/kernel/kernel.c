@@ -11,7 +11,7 @@ void kernel_main(multiboot_info_t* mbd, uint32_t magic){
 	if(magic != MULTIBOOT_BOOTLOADER_MAGIC) return;
 	set_fb((uint32_t*)mbd->framebuffer_addr);
 
-	puts("Hello World\nShitfart");
+	printf("Hello World\n");
 
 	for(;;) asm("hlt");
 }
