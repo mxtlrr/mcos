@@ -48,10 +48,36 @@ start:
     mov sp, 0x7c00
     mov bp, sp  ;; bp → 0x7c00
 
+    ;; read more info from the disk
+    mov ah, 0x02
+    mov al, 0x3b  ;; 59 sectors
+    mov ch, 0x00
+    mov cl, 0x02
+    mov dh, 0x00
+    
+    xor bx, bx
+    mov es, bx
+    mov bx, 0x502
+    int 0x13
+    jc error
+
+    ;; enable A20,
+    ;; giving us access to all memory
+    call enable_a20
+
     jmp $
 
 jmp $
 
+;; fast A20
+enable_a20:
+  in al,  0x92
+  or al,  0x02
+  out 0x92, al
+  ret
+
+error:
+  jmp $
 
 times 510-($-$$) db 0
 dw 0xaa55
