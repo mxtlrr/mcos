@@ -5,8 +5,8 @@ MBFLAGS  equ  MBALIGN | MEMINFO | VMODE ;; this is the Multiboot 'flag' field
 MAGIC    equ  0x1BADB002                ;; 'magic number' lets bootloader find the header
 CHECKSUM equ -(MAGIC + MBFLAGS)         ;; checksum
 
-WIDTH_FB equ 640
-HEIGHT_F equ 480
+WIDTH_FB equ 1024
+HEIGHT_F equ 768
 DEPTH    equ  32
 
 section .multiboot
