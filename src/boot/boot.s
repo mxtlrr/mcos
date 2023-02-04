@@ -1,9 +1,9 @@
-MBALIGN  equ  1 << 0            ;; align loaded modules on page boundaries
-MEMINFO  equ  1 << 1            ;; provide memory map
-VMODE    equ  1 << 2            ;; video mode
-MBFLAGS  equ  MBALIGN | MEMINFO ;; this is the Multiboot 'flag' field
-MAGIC    equ  0x1BADB002        ;; 'magic number' lets bootloader find the header
-CHECKSUM equ -(MAGIC + MBFLAGS) ;; checksum
+MBALIGN  equ  1 << 0                    ;; align loaded modules on page boundaries
+MEMINFO  equ  1 << 1                    ;; provide memory map
+VMODE    equ  1 << 2                    ;; video mode
+MBFLAGS  equ  MBALIGN | MEMINFO | VMODE ;; this is the Multiboot 'flag' field
+MAGIC    equ  0x1BADB002                ;; 'magic number' lets bootloader find the header
+CHECKSUM equ -(MAGIC + MBFLAGS)         ;; checksum
 
 WIDTH_FB equ 640
 HEIGHT_F equ 480
