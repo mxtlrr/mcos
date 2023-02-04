@@ -13,6 +13,8 @@ OUTPUT_DIR  := bin
 LINK_SCRIPT := src/linker.ld
 
 override CFILES := $(shell find ./src/kernel -type f)
+override ASFILES := $(shell find ./include -type f -name '*.s')
+
 override OBJS		:= $(shell find ./bin -type f -name '*.o')
 
 all: mcos build_iso
@@ -20,6 +22,7 @@ all: mcos build_iso
 mcos:
 	@mkdir -p bin/
 	$(AS) $(ASFLAGS) src/boot/boot.s -o $(OUTPUT_DIR)/boot.o
+	@$(foreach file, $(ASFILES), $(AS) $(ASFLAGS) $(file) -o bin/$(basename $(notdir $(file))).o; echo "[AS] $(file)";)
 	@$(foreach file, $(CFILES), $(CC) $(CFLAGS) -c $(file) -o bin/$(basename $(notdir $(file))).o; echo "[CC] $(file)";)
 
 	@echo Linking

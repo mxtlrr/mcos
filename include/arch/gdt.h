@@ -3,6 +3,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "libc/stdio.h"
 
 #define GRANULARITY 0xcf
 
