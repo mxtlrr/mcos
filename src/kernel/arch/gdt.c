@@ -4,7 +4,7 @@ gdt_entry_t gdt_entries[5];
 gdt_ptr_t   gdt_ptr;
 
 // initialize gdt
-void init_gdt(){
+uint32_t init_gdt(){
   gdt_ptr.limit = (sizeof(gdt_entry_t)*5)-1;
   gdt_ptr.base  = (uint32_t)&gdt_entries;
 
@@ -19,7 +19,7 @@ void init_gdt(){
 
   // initialize gdt
   flush_gdt((uint32_t)&gdt_ptr);
-  printf("gdt location => 0x%x\n", (uint32_t)&gdt_ptr);
+  return (uint32_t)&gdt_ptr; // return location of GDTR
 }
 
 void gdt_set_gate(int num, uint32_t base, uint32_t limit, 
