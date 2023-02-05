@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "io.h"
 
 typedef struct {
   uint16_t isr_low;     // lower 16 bits

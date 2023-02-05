@@ -15,14 +15,35 @@ void idt_set_descriptor(uint8_t vector, void* isr, uint8_t flags) {
 }
 
 extern void* isr_stub_table[];
+extern void* irq_stub_table[];
+
 bool vectors[256];
 
 uint32_t idt_init() {
   idtr.base = (uintptr_t)&idt[0];
   idtr.limit = (uint16_t)sizeof(idt_entry_t) * 256 - 1;
 
+  // ISRs
   for (uint8_t vector = 0; vector < 32; vector++) {
     idt_set_descriptor(vector, isr_stub_table[vector], 0x8E);
+    vectors[vector] = true;
+  }
+
+  // Update the IRQs by first remapping PIC
+  outb(0x20, 0x11);
+  outb(0xA0, 0x11);
+  outb(0x21, 0x20);
+  outb(0xA1, 0x28);
+  outb(0x21, 0x04);
+  outb(0xA1, 0x02);
+  outb(0x21, 0x01);
+  outb(0xA1, 0x01);
+  outb(0x21, 0x0);
+  outb(0xA1, 0x0);
+
+  // IRQs
+  for(uint8_t vector = 32; vector < 48; vector++){
+    idt_set_descriptor(vector, irq_stub_table[vector], 0x8e);
     vectors[vector] = true;
   }
 

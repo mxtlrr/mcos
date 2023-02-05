@@ -1,3 +1,6 @@
+KERNEL_SS equ 0x10
+
+
 %macro isr_err_stub 1
 isr_stub_%+%1:
   call exception_handler
@@ -53,3 +56,36 @@ isr_stub_table:
   dd isr_stub_%+i
 %assign i i+1 
 %endrep
+
+
+;; %1 -> IRQ # (e.g. 00-15)
+;; %2 -> ISR # (e.g. 32-47)
+%macro IRQ 2
+  global irq_stub_%1
+  irq_stub_%1:
+    cli ;; clear interrupts before we just to interrupt handler
+    push byte 0
+    push byte %2  ;; recognize that this is an IRQ
+    jmp common_hdlr_irq
+%endmacro
+
+
+global irq_stub_table
+irq_stub_table:
+%assign j 0
+%rep 15
+  dd irq_stub_%+j
+%assign j j+1
+%endrep
+
+extern irq_recv
+common_hdlr_irq:
+  pusha   ;; all i386 registers pushed
+
+  mov ax, ds
+  push eax      ;; save data segment
+
+  ;; update to new
+  mov ax, KERNEL_SS
+  
+  call irq_recv
