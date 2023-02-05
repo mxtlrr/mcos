@@ -13,4 +13,12 @@ typedef struct {
 
 void exception_handler(void);
 
+typedef void (*isr_t)(registers_t);
+
+void register_int(uint8_t INT, isr_t callback);
+
 void irq_recv(registers_t r);
+
+
+void test(registers_t r);
+void fjdka();

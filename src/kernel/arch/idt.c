@@ -23,7 +23,7 @@ uint32_t idt_init() {
   idtr.base = (uintptr_t)&idt[0];
   idtr.limit = (uint16_t)sizeof(idt_entry_t) * 256 - 1;
 
-  // ISRs
+  // ISRs (0-31)
   for (uint8_t vector = 0; vector < 32; vector++) {
     idt_set_descriptor(vector, isr_stub_table[vector], 0x8E);
     vectors[vector] = true;
@@ -41,10 +41,9 @@ uint32_t idt_init() {
   outb(0x21, 0x0);
   outb(0xA1, 0x0);
 
-  // IRQs
+  // IRQs (32-47)
   for(uint8_t vector = 32; vector < 48; vector++){
     idt_set_descriptor(vector, irq_stub_table[vector], 0x8e);
-    vectors[vector] = true;
   }
 
   __asm__ volatile ("lidt %0" : : "m"(idtr)); // load the new IDT

@@ -95,7 +95,7 @@ irq_stub_table:
 %assign j j+1
 %endrep
 
-extern irq_recv
+[extern irq_recv]
 common_hdlr_irq:
   pusha   ;; all i386 registers pushed
 
@@ -103,7 +103,7 @@ common_hdlr_irq:
   push eax      ;; save data segment
 
   ;; update to new
-  mov ax, KERNEL_SS
+  mov ax, 0x10
   mov ds, ax
   mov es, ax
   mov fs, ax
@@ -124,4 +124,5 @@ common_hdlr_irq:
   ;; ISR number
   add esp, 8
 
+  sti
   iret  ;; automatically re-enables interrupts, interrupt return.
