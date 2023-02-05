@@ -9,6 +9,7 @@
 void kernel_main(multiboot_info_t* mbd, uint32_t magic){
 	if(magic != MULTIBOOT_BOOTLOADER_MAGIC) return;
 	set_fb((uint32_t*)mbd->framebuffer_addr);
+	set_pitch(mbd->framebuffer_pitch);
 
 	printf("Hello World\n");
 	uint32_t gdtr = init_gdt()+0x20;

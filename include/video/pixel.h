@@ -10,6 +10,6 @@
 #define WIDTH  1024
 #define HEIGHT  768
 
-#define PITCH 4096
-
 void putpixel(uint32_t* addr, int x, int y, uint32_t color);
+
+void set_pitch(uint32_t pitch);
