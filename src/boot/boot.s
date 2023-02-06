@@ -37,6 +37,7 @@ stack_top:
 section .text
 global _start:function (_start.end - _start)
 _start:
+  cli
 	extern kernel_main
 	mov esp, stack_top
 

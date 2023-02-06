@@ -97,32 +97,26 @@ irq_stub_table:
 
 [extern irq_recv]
 common_hdlr_irq:
-  pusha   ;; all i386 registers pushed
+	pusha
 
-  mov ax, ds
-  push eax      ;; save data segment
+	mov ax, ds
+	push eax
 
-  ;; update to new
-  mov ax, 0x10
-  mov ds, ax
-  mov es, ax
-  mov fs, ax
-  mov gs, ax
+	mov ax, 0x10
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
 
-  call irq_recv
+	call irq_recv
 
-  ;; ... let's not clobber the stack!
-  ;; pop everything pushed
-  pop ebx
-  mov ds, bx
-  mov es, bx
-  mov fs, bx
-  mov gs, bx
+	pop ebx
+	mov ds, bx
+	mov es, bx
+	mov fs, bx
+	mov gs, bx
 
-  popa  ;; pop all registers we did not pop already.
-  ;; if an error code was pushed, clean that up as well as the
-  ;; ISR number
-  add esp, 8
-
-  sti
-  iret  ;; automatically re-enables interrupts, interrupt return.
+	popa
+	add esp, 8
+	sti
+	iretd

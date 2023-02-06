@@ -17,24 +17,38 @@ void register_int(uint8_t INT, isr_t callback){
 
 
 void irq_recv(registers_t r){
-  // send EOI
-  if(r.int_no >= 40) outb(0xA0, 0x20);
-  outb(0x20, 0x20);
-
+  printf("sh\n");
   if(handlers[r.int_no] != 0){
     // call handler
     isr_t handler = handlers[r.int_no];
     handler(r);
 
+    if(r.int_no >= 40) {
+      outb(0xA0, 0x20);
+    }
+    outb(0x20, 0x20);
   }
-  printf("unhandled interrupt\n");
 }
 
+uint32_t tick = 0;
 void test(registers_t r){
-  printf("shitter 752\n");
-  outb(0x20, 0x20);
+  tick++;
+  printf("ok\n");
 }
 
-void fjdka(){
+void fjdka(uint32_t frequency){
   register_int(32, test);
+
+   uint32_t divisor = 1193180 / frequency;
+
+   // Send the command byte.
+   outb(0x43, 0x36);
+
+   // Divisor has to be sent byte-wise, so split here into upper/lower bytes.
+   uint8_t l = (uint8_t)(divisor & 0xFF);
+   uint8_t h = (uint8_t)((divisor>>8) & 0xFF);
+
+   // Send the frequency divisor.
+   outb(0x40, l);
+   outb(0x40, h);
 }
