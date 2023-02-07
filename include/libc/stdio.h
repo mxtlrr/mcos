@@ -12,4 +12,3 @@ void puts(char* fmt);
 void printf(char* fmt, ...);
 
 void set_color(uint32_t col);
-void set_fb(uint32_t* addr);

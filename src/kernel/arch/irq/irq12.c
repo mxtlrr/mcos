@@ -1,8 +1,92 @@
 #include "arch/irq/irq12.h"
+#include <stdbool.h>
+
+#define left_btn 0b00000001
+
+#define x_sign   0b00010000
+#define y_sign   0b00110000
+
+#define x_overflow 0b01000000
+#define y_overflow 0b10000000
+
+uint8_t mouse_cycle = 0;
+uint8_t mouse_packet[4];
+bool packet_ready = false;
+
+uint32_t mouse_x = 0;
+uint32_t mouse_y = 0;
+
+void handle_mouse(uint8_t data){
+  switch(mouse_cycle){
+    case 0:
+      if(packet_ready) break;
+      if(data & 0b0001000 == 0) break; // incorrect byte
+      mouse_packet[0] = data;
+      mouse_cycle++;
+      break;
+    case 1:
+      if(packet_ready) break;
+      mouse_packet[1] = data;
+      mouse_cycle++;
+      break;
+    case 2:
+      if(packet_ready) break;
+      mouse_packet[2] = data;
+      packet_ready = true;
+      mouse_cycle = 0;
+      break;
+  }
+}
+
+
+void proc_packet(){
+  if(!packet_ready) return;
+    packet_ready = false;
+
+    bool xNeg, yNeg, xOver, yOver;
+    if(mouse_packet[0] & x_sign) xNeg = true;
+    else xNeg = false;
+
+    if(mouse_packet[0] & y_sign) yNeg = true;
+    else yNeg = false;
+
+    if(mouse_packet[0] & x_overflow) xOver = true;
+    else xOver = false;
+
+    if(mouse_packet[0] & y_overflow) yOver = true;
+    else yOver = false;
+
+    if(!xNeg){
+      mouse_x += mouse_packet[1];
+      if(xOver) mouse_x += 255;
+    } else {
+      mouse_packet[1] = 256 - mouse_packet[1];
+      mouse_x -= mouse_packet[1];
+      if(xOver) mouse_x -= 255;
+    }
+
+    if(!yNeg){
+      mouse_y -= mouse_packet[2];
+      if(yOver) mouse_y -= 255;
+    } else {
+      mouse_packet[2] = 256 - mouse_packet[2];
+      mouse_y += mouse_packet[2];
+      if(yOver) mouse_y += 255;
+    }
+
+    if(mouse_x < 0) mouse_x = 0;
+    if(mouse_x > WIDTH-8) mouse_x = WIDTH-8;
+
+    if(mouse_y < 0) mouse_y = 0;
+    if(mouse_y > HEIGHT-16) mouse_y = HEIGHT-16;
+
+    // plot mouse
+    printf("(%d, %d)", mouse_x, mouse_y);
+}
 
 void mouse_callback(){
   uint8_t mouseData = inb(0x60);
-  printf("m");
+  handle_mouse(mouseData);
 }
 
 void mouse_wait(){

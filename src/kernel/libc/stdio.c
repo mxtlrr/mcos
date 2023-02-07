@@ -1,4 +1,5 @@
 #include "libc/stdio.h"
+#include "video/pixel.h"
 
 // temple OS font..
 uint64_t FONT[256] = {
@@ -263,16 +264,12 @@ uint64_t FONT[256] = {
 uint32_t color = 0xffffff; // white
 
 void set_color(uint32_t col){ color = col; }
-uint32_t* buffer = 0x0;
-
-void set_fb(uint32_t* addr){
-	buffer = addr;
-}
 
 int x = 0;
 int y = 0;
 
 void putc(char c){
+	uint32_t* buffer = get_buffer();
 	uint32_t px = 0;
 	uint64_t bCh = FONT[c];
 
