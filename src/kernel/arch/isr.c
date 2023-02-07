@@ -34,6 +34,7 @@ uint32_t tick = 0;
 void test(registers_t r){
   tick++;
   printf("ok\n");
+  outb(0x20, 0x20);
 }
 
 void fjdka(uint32_t frequency){
