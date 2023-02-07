@@ -1,6 +1,27 @@
 #include "arch/irq/irq12.h"
 #include <stdbool.h>
 
+
+uint8_t mouse_ptr[] = {
+  0b11100000, 0b00000000, 
+  0b11000000, 0b00000000, 
+  0b10000000, 0b00000000, 
+  0b00000000, 0b00000000, 
+  0b00000000, 0b00000000, 
+  0b00000000, 0b00000000, 
+  0b00000000, 0b00000000, 
+  0b00000000, 0b00000000, 
+  0b00000000, 0b00000000, 
+  0b00000000, 0b00000000, 
+  0b00000000, 0b00000000, 
+  0b00000000, 0b00000000, 
+  0b00000000, 0b00000000, 
+  0b00000000, 0b00000000, 
+  0b00000000, 0b00000000, 
+  0b00000000, 0b00000000
+};
+
+
 #define left_btn 0b00000001
 
 #define x_sign   0b00010000
@@ -13,8 +34,8 @@ uint8_t mouse_cycle = 0;
 uint8_t mouse_packet[4];
 bool packet_ready = false;
 
-uint32_t mouse_x = 0;
-uint32_t mouse_y = 0;
+uint8_t mouse_x = 0;
+uint8_t mouse_y = 0;
 
 void handle_mouse(uint8_t data){
   switch(mouse_cycle){
@@ -81,7 +102,15 @@ void proc_packet(){
     if(mouse_y > HEIGHT-16) mouse_y = HEIGHT-16;
 
     // plot mouse
-    printf("(%d, %d)", mouse_x, mouse_y);
+    if((mouse_x != 0) || (mouse_y != 0)){
+      plot_mouse_cursor(mouse_ptr, mouse_x, 35, 0xff00ff);
+      plot_mouse_cursor(mouse_ptr, 128, mouse_y, 0xff00ff);
+      
+      putpixel(128, mouse_y, 0xff00ff);
+    
+    }
+
+    packet_ready = false;
 }
 
 void mouse_callback(){

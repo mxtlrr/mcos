@@ -14,3 +14,5 @@ void mouse_timeout();
 void mouse_outb(uint8_t val);
 uint8_t mouse_read();
 void proc_packet();
+
+extern uint8_t mouse_ptr[];
