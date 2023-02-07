@@ -3,7 +3,6 @@
 uint32_t tick = 0;
 void pit_callback(){
 	tick++;
-  printf("%d ", tick);
   outb(0x20, 0x20);
 }
 

@@ -19,7 +19,7 @@ void kernel_main(multiboot_info_t* mbd, uint32_t magic){
 	printf("GDT was loaded at 0x%x\n", gdtr);
 	printf("IDT was loaded at 0x%x\n", idtr);
 
-	register_pit(1190);
+	register_pit(60);
 
 	for(;;){
 		asm("hlt");
