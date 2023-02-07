@@ -2,7 +2,9 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+
 #include "io.h"
+#include "libc/string.h"
 
 typedef struct {
   uint16_t isr_low;     // lower 16 bits

@@ -4,7 +4,7 @@ TARGET			 := myos.bin
 
 CC := i386-elf-gcc
 CFLAGS := -std=gnu99 -ffreestanding -O2 -Wall -Wextra \
-					-Iinclude -g
+					-Iinclude -g -nostdlib
 
 AS 			:= nasm
 ASFLAGS := -f elf32 -g

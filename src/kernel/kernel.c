@@ -15,7 +15,7 @@ void kernel_main(multiboot_info_t* mbd, uint32_t magic){
 
 	printf("Hello World\n");
 	uint32_t gdtr = init_gdt()+0x20;
-	uint32_t idtr = idt_init()+0x10;
+	uint32_t idtr = init_idt()+0x10;
 	printf("GDT was loaded at 0x%x\n", gdtr);
 	printf("IDT was loaded at 0x%x\n", idtr);
 

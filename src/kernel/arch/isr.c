@@ -17,7 +17,6 @@ void register_int(uint8_t INT, isr_t callback){
 
 
 void irq_recv(registers_t r){
-  printf("sh\n");
   if(handlers[r.int_no] != 0){
     // call handler
     isr_t handler = handlers[r.int_no];
@@ -34,7 +33,6 @@ uint32_t tick = 0;
 void test(registers_t r){
   tick++;
   printf("ok\n");
-  outb(0x20, 0x20);
 }
 
 void fjdka(uint32_t frequency){
