@@ -11,8 +11,7 @@ typedef struct {
   uint32_t useless, cs, eflags, useresp, ss;
 } registers_t;
 
-void exception_handler(void);
-
+void exception_handler(registers_t r);
 typedef void (*isr_t)(registers_t);
 
 void register_int(uint8_t INT, isr_t callback);
