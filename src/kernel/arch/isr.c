@@ -57,14 +57,13 @@ void register_int(uint8_t INT, isr_t callback){
 
 
 void irq_recv(registers_t r){
+  if(r.int_no >= 40) {
+    outb(0xA0, 0x20);
+  }
+  outb(0x20, 0x20);
   if(handlers[r.int_no] != 0){
     // call handler
     isr_t handler = handlers[r.int_no];
     handler(r);
-
-    if(r.int_no >= 40) {
-      outb(0xA0, 0x20);
-    }
-    outb(0x20, 0x20);
   }
 }
