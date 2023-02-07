@@ -12,7 +12,7 @@ typedef struct {
 } registers_t;
 
 void exception_handler(registers_t r);
-typedef void (*isr_t)(registers_t);
+typedef void (*isr_t)();
 
 void register_int(uint8_t INT, isr_t callback);
 
