@@ -6,7 +6,7 @@
 #include "arch/idt.h"
 
 #include "arch/isr.h"
-
+#include "arch/irq/irq0.h"
 
 void kernel_main(multiboot_info_t* mbd, uint32_t magic){
 	if(magic != MULTIBOOT_BOOTLOADER_MAGIC) return;
@@ -19,7 +19,7 @@ void kernel_main(multiboot_info_t* mbd, uint32_t magic){
 	printf("GDT was loaded at 0x%x\n", gdtr);
 	printf("IDT was loaded at 0x%x\n", idtr);
 
-	asm("int $0x4");
+	register_pit(1190);
 
 	for(;;){
 		asm("hlt");

@@ -3,5 +3,5 @@
 
 #include "arch/isr.h"
 
-void register_kbd();
-void kbd_callback();
+void register_pit(uint32_t freq);
+void pit_callback();
