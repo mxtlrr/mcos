@@ -1,9 +1,49 @@
 #include "arch/isr.h"
 
-void exception_handler() {
-  set_color(RED);
-  printf("\nSomething bad happened\n");
-  printf("Exception handler called!\n");
+char* mnemonic[] = {
+  "#DE",
+  "#DB",
+  "-",
+  "#BP",
+  "#OF",
+  "#BR",
+  "#UD",
+  "#NM",
+  "#DF",
+  "-",
+  "#TS",
+  "#NP",
+  "#SS",
+  "#GP",
+  "#PF"
+};
+
+char* exception[] = {
+  "Division Error",
+  "Debug",
+  "NMI",
+  "Breakpoint",
+  "Overflow",
+  "Bound Range Exceeded",
+  "Invalid Opcode",
+  "Dev. Not Available",
+  "Double Fault",
+  "Coprocessor Seg. Overrun",
+  "Invalid TSS",
+  "Segment Not Present",
+  "General Protection Fault",
+  "Page Fault"
+};
+
+
+void exception_handler(registers_t r) {
+  printf("\n\n%s (%s) triggered!\n",
+         exception[r.int_no], mnemonic[r.int_no]);
+  printf("Technical details: ");
+  set_color(0x189bcc);
+  printf("ISR: 0x%x\nErr Code: %d", r.int_no, r.err_code);
+  printf(" | EIP at 0x%x\n", r.eip-2);
+  // do not exec. code after this
   __asm__ volatile ("cli; hlt"); // Completely hangs the computer
   for(;;);
 }
