@@ -23,6 +23,7 @@ void kernel_main(multiboot_info_t* mbd, uint32_t magic){
 	printf("IDT was loaded at 0x%x\n", idtr);
 
 	register_pit(60);
+	init_kbd();
 	
 	for(;;){
 		asm("hlt");
