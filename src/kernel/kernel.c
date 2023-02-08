@@ -9,7 +9,7 @@
 
 /* irqs */
 #include "arch/irq/irq0.h"
-#include "arch/irq/irq12.h"
+#include "arch/irq/irq1.h"
 
 void kernel_main(multiboot_info_t* mbd, uint32_t magic){
 	if(magic != MULTIBOOT_BOOTLOADER_MAGIC) return;
