@@ -23,14 +23,7 @@ void kernel_main(multiboot_info_t* mbd, uint32_t magic){
 	printf("IDT was loaded at 0x%x\n", idtr);
 
 	register_pit(60);
-	mouse_init();
-
-	// unmask mouse bit
-	outb(0x20+1, 0b11111001);
-	outb(0xa0+1, 0b11101111);
-
-	while(true) proc_packet();
-
+	
 	for(;;){
 		asm("hlt");
 	}
