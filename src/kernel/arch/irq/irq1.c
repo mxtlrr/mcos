@@ -3,6 +3,10 @@
 #define KBD_IN  0x60
 #define KBD_ACK 0xfa
 
+enum SPECIAL_KEYS {
+	CAPS = 186
+};
+
 // US Query keymap
 // Credit: bran's kernel development tutorial
 unsigned char kbdus[128] = {
@@ -42,7 +46,20 @@ unsigned char kbdus[128] = {
 	0,	/* F11 Key */
 	0,	/* F12 Key */
 	0,	/* All other keys are undefined */
-};	
+};
+
+uint8_t caps_kbdus[128] = {
+	0,  27, '1', '2', '3', '4', '5', '6', '7', '8',
+	'9', '0', '-', '=', '\b', '\t', 'Q', 'W', 'E', 'R',
+	'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\n', 0,
+	'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';',
+	'\'', '`', 0,  '\\', 'Z', 'X', 'C', 'V', 'B', 'N',
+	'M', ',', '.', '/',   0, '*', 0, ' ', 0, 0, 0, 0,
+	0,   0,   0,   0,   0,   0, 0,	0, 	0, 0, 0, 0,	'-',
+	0, 0, 0, '+', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+
+uint8_t caps_check = 0;
 
 void init_kbd(){
 	register_int(IRQ1, kbd_callback);
@@ -67,7 +84,19 @@ void kbd_callback(){
 	uint8_t untreated = inb(0x60);
 	if(untreated & 0x80){
 		// shift alt or control
+		
+		switch(untreated){
+			case CAPS:
+				if(caps_check == 0) caps_check = 1;
+				else caps_check = 0;
+				break;
+		
+			default:
+				break;
+		}			
 	} else {
-		printf("%c", kbdus[untreated]);
+		if(caps_check == 1 /* TODO: check shift aswell */)
+			printf("%c", caps_kbdus[untreated]);
+		else printf("%c", kbdus[untreated]);
 	}
 }
