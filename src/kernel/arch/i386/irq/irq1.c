@@ -1,4 +1,4 @@
-#include "arch/irq/irq1.h"
+#include "arch/i386/irq/irq1.h"
 
 #define KBD_IN  0x60
 #define KBD_ACK 0xfa

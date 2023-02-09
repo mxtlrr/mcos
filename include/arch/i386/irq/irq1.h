@@ -1,6 +1,6 @@
 #pragma once
 
-#include <arch/isr.h>
+#include <arch/i386/isr.h>
 #include <libc/stdio.h>
 
 void init_kbd(); // basically just the register

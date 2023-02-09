@@ -2,14 +2,14 @@
 #include "libc/stdio.h"
 
 /* low level stuff */
-#include "arch/gdt.h"
-#include "arch/idt.h"
+#include "arch/i386/gdt.h"
+#include "arch/i386/idt.h"
 
-#include "arch/isr.h"
+#include "arch/i386/isr.h"
 
 /* irqs */
-#include "arch/irq/irq0.h"
-#include "arch/irq/irq1.h"
+#include "arch/i386/irq/irq0.h"
+#include "arch/i386/irq/irq1.h"
 
 void kernel_main(multiboot_info_t* mbd, uint32_t magic){
 	if(magic != MULTIBOOT_BOOTLOADER_MAGIC) return;

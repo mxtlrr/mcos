@@ -1,4 +1,4 @@
-#include "arch/irq/irq0.h"
+#include "arch/i386/irq/irq0.h"
 
 uint32_t tick = 0;
 void pit_callback(){

@@ -1,4 +1,4 @@
-#include "video/pixel.h"
+#include "libc/video/pixel.h"
 uint32_t PITCH = 0;
 
 void set_pitch(uint32_t pitch){ PITCH = pitch; }
