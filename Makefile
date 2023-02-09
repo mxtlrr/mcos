@@ -1,5 +1,5 @@
 DEFAULT_HOST := i386
-TARGET			 := myos.bin
+TARGET		 := myos.bin
 
 
 CC := i386-elf-gcc
@@ -23,7 +23,7 @@ mcos:
 	@mkdir -p bin/
 	$(AS) $(ASFLAGS) src/boot/boot.s -o $(OUTPUT_DIR)/boot.o
 	@$(foreach file, $(ASFILES), $(AS) $(ASFLAGS) $(file) -o bin/$(basename $(notdir $(file))).o; echo "[AS] $(file)";)
-	@$(foreach file, $(CFILES), $(CC) $(CFLAGS) -c $(file) -o bin/$(basename $(notdir $(file))).o; echo "[CC] $(file)";)
+	make -C src/kernel
 
 	@echo Linking
 	$(CC) -T$(LINK_SCRIPT) -o bin/$(TARGET) -ffreestanding -O2 -nostdlib $(OBJS) -lgcc
