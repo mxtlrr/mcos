@@ -1,4 +1,4 @@
-#include "arch/isr.h"
+#include "arch/i386/isr.h"
 
 char* mnemonic[] = {
   "#DE",

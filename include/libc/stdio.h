@@ -1,6 +1,6 @@
 #pragma once
 
-#include "video/pixel.h"
+#include "libc/video/pixel.h"
 #include "libc/string.h"
 
 #include <stddef.h>

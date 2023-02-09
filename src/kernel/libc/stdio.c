@@ -1,5 +1,5 @@
 #include "libc/stdio.h"
-#include "video/pixel.h"
+#include "libc/video/pixel.h"
 
 // temple OS font..
 uint64_t FONT[256] = {
